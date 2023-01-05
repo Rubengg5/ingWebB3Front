@@ -3,7 +3,7 @@
 <div class="container-xxl bd-gutter p-5 mb-4 bg-light rounded-3">
   <h1 class="display-5 fw-bold">Nueva reserva</h1>
   <form *ngIf="!reservaCorrecta"(ngSubmit)="isReservaOK()" #forma="ngForm">
-    <h3 *ngIf="!fechasCheck" style="color: rgb(153, 1, 1); align-self:center;">Vivienda no disponible en ese rango de fechas</h3>
+    <h3 *ngIf="fechasCheck" style="color: rgb(153, 1, 1); align-self:center;">Vivienda no disponible en ese rango de fechas</h3>
       <div class="row align-items-md-stretch">
         <div class="form-group col-md-6">
           <label for="inputNombre">Fecha de entrada</label>
