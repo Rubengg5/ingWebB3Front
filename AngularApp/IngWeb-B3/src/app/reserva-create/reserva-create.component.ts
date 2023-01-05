@@ -15,6 +15,7 @@ export class ReservaCreateComponent implements OnInit {
   error : string ="";
   reservaCorrecta : boolean = false;
   reservaPagada : boolean = false;
+  fechasCheck: boolean = false;
   dias : number = -1;
   precio : number = -1;
   status: string="Esperando...";
@@ -59,15 +60,7 @@ export class ReservaCreateComponent implements OnInit {
   }
 
   checkReserva(){
-    if(this.isReservaOK()){
-      console.log("Reserva OK");
-      this.reservaCorrecta = true;
-      this.dias = (this.process(this.newReserva.fechaSalida).getTime()-this.process(this.newReserva.fechaEntrada).getTime()) / (1000 * 3600 * 24)
-      this.precio = (this.vivienda.precioNoche*this.dias);
-    }else{
-      this.reservaCorrecta = false;
-      console.log("Reserva incorrecta")
-    }
+      this.isReservaOK();
   }
   createReserva(){
     this.newReserva.id = uuidv4();
@@ -92,30 +85,36 @@ export class ReservaCreateComponent implements OnInit {
   isReservaOK(){
     if(this.newReserva.fechaEntrada=="" || this.newReserva.fechaSalida==""){
       this.error ="Rellene todos los campos de fecha";
-      return false;
+      this.reservaCorrecta = false;
     }
     if (this.process(this.newReserva.fechaEntrada).getTime()>=this.process(this.newReserva.fechaSalida).getTime()){
       this.error ="La fecha de salida debe ser posterior a la de llegada";
-      return false;
+      this.reservaCorrecta = false;
     }
     if (this.process(this.newReserva.fechaEntrada).getTime()<= new Date().getTime()){
       this.error ="No puedes reservar una fecha pasada";
-      return false;
+      this.reservaCorrecta = false;
     }
     if (this.newReserva.nPersonas > this.vivienda.maxOcupantes){
       this.error ="El número máximo de ocupantes es " + this.vivienda.maxOcupantes;
-      return false;
+      this.reservaCorrecta = false;
     }
-    var numeroReservas;
-    this.reservasService.getReservaByFechas(this.newReserva.fechaEntrada, this.newReserva.fechaSalida).subscribe(data =>{
-      numeroReservas = data
-    })
-    console.log("nReservas", numeroReservas)
 
-    // if (numeroReservas > 0){
-    //   return false;
-    // }
-    return true;
+    this.reservasService.getReservaByFechas(this.newReserva.fechaEntrada, this.newReserva.fechaSalida).subscribe(data =>{
+      if(data.length>0){
+        this.reservaCorrecta = false;
+      }else{
+        this.reservaCorrecta = true;
+      }
+    })
+
+    if(this.reservaCorrecta){
+      this.dias = (this.process(this.newReserva.fechaSalida).getTime()-this.process(this.newReserva.fechaEntrada).getTime()) / (1000 * 3600 * 24)
+      this.precio = (this.vivienda.precioNoche*this.dias);
+    }
+
+    this.fechasCheck = true;
+    
   }
   process(date: any){
     var parts = date.split("-");
