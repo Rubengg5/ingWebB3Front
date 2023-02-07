@@ -4,7 +4,7 @@ export interface ReservaView{
     fechaEntrada: string;
     fechaSalida: string;
     nPersonas: number;
-    inquilino: string;
+    inquilino?: string;
     precioTotal: number;
     nombre: string;
     imagen: string;

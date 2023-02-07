@@ -5,7 +5,7 @@ export interface Vivienda{
     nombre: string;
     descripcion: string;
     imagen: string;
-    propietario: string;
+    propietario?: string;
     localidad: string;
     provincia: string;
     ubicacion: Ubicacion;

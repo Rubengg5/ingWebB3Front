@@ -39,7 +39,7 @@ export class ViviendaCreateComponent implements OnInit {
     nombre: "",
     descripcion: "",
     imagen: "",
-    propietario: JSON.stringify(localStorage.getItem("id")),
+    propietario: localStorage.getItem("id")?.toString(),
     localidad: "",
     provincia: "",
     ubicacion: this.ubicacion,

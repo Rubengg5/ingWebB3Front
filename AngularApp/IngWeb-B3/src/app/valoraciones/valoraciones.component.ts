@@ -81,7 +81,7 @@ export class ValoracionesComponent implements OnInit {
   createValoracion() {
     this.newValoracion.id = uuidv4();
     this.newValoracion.vivienda = this.idVivienda;
-    this.newValoracion.autor = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+    this.newValoracion.autor = localStorage.getItem("id")?.toString();
     this.valoracionesService.createValoracion(this.newValoracion).subscribe(data => 
     {
         this.responseOK = data !== null;
